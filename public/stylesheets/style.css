@@ -1,0 +1,14 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.delete {
+	text-decoration: underline;
+	color: #f51f1f;
+	cursor: pointer;
+}

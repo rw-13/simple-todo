@@ -1,0 +1,27 @@
+extends layout
+
+block content
+	h1= data.title
+	
+	-
+		var id = (data.rows.name !== 'undefined') ? data.rows.id : ''
+		var task = (data.rows.name !== 'undefined') ? data.rows.name : ''
+		var completed = (data.rows.completed === 'Y') ? true : false
+
+	form(method='post' action=data.url)
+		if (data.type === 'update')
+			label ИД
+				input(type='text' id='id' value=id disabled)
+				input(type='hidden' name="id" value=id)
+
+		label Задача
+			input(type='text' id='name' name="name" value=task)
+
+		if (data.type === 'update')
+			label Статус
+				input(type='checkbox' id='completed' name="completed" checked=completed)
+
+		input(type='submit' value='Добавить')
+
+	div
+		a(href='/') На главную

@@ -1,0 +1,65 @@
+extends layout
+
+block content
+	h1= data.title 
+
+	table.table
+		thead
+			tr.table__row
+				td N п/п
+				td Задача
+				td Статус
+				td
+				td
+		tbody
+			each row in data.rows
+				-
+					var url = '/tasks/' + row.id
+
+				tr.table__row
+					td= row.id
+					td= row.name
+					td= row.completed
+					td
+						a(href="/tasks/update/"+row.id) Редактировать
+					td
+						span(data-del="/tasks/"+row.id).delete Удалить
+
+	a(href='/tasks/create') Создать задачу
+
+	script.
+		
+		function findParent(el, cls) {
+			var counter = 0;
+			var parent = el;
+			while(counter < 5) {
+				parent = parent.parentNode;
+				if (parent.classList.contains(cls))
+					return parent;
+				counter++;
+			}
+			return false;
+		}
+
+		var nodeList = document.querySelectorAll('span[data-del]');
+		var arrList = Array.prototype.slice.call(nodeList);
+		arrList.forEach(function(item) {
+			item.addEventListener('click', function(e) {
+				var path = item.getAttribute('data-del');
+				console.log(e.target);
+				var xhr = new XMLHttpRequest();
+				xhr.open('DELETE', path, true);
+				xhr.send();
+				
+				xhr.onreadystatechange = function() {
+					if (xhr.readyState != 4) return;
+
+					if (xhr.status >= 200 && xhr.status < 300) {
+						var el = findParent(item, 'table__row');
+						el.remove();
+					} else {
+						console.log(xhr);
+					}
+				}
+			});
+		});
